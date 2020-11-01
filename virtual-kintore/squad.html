@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>あなたの記録</title>
+  <title>スクワットチャレンジ</title>
 
   <!--css & js-->
   <link rel = "stylesheet" type = "text / css" href = "http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css" >
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/squad.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -25,23 +25,19 @@
     </div>
   </nav>
 
-  <section class="section">
-    <div class="container">
       <div id="vrm"></div>
       <div id="motion" >
         <div id="loading-indicator">PoseNet model is loading.</div>
         <canvas id="webacamCanvas" width="480" height="320"></canvas>
         <video id="video" width="480" height="320" style="display:none;" autoplay playsinline>Video stream not
         available.</video>
-      </div>
-    </div>
   </section>
 
 
 		<script src="https://unpkg.com/three@0.106.2/build/three.js"></script>
 		<script src="https://unpkg.com/three@0.106.2/examples/js/loaders/GLTFLoader.js"></script>
 		<script src="https://unpkg.com/three@0.106.2/examples/js/controls/OrbitControls.js"></script>
-		<script src="./three-vrm.min.js"></script>
+		<script src="js/three-vrm.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js"></script>
