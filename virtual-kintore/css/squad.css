@@ -1,0 +1,14 @@
+
+	body {
+		margin: 0;
+	}
+	canvas {
+		display: block;
+	}
+	#motion {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		color: white;
+	}
+	#webacamCanvas { transform: rotateY(180deg); }
