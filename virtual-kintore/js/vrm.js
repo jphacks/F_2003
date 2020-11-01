@@ -1,7 +1,83 @@
+
+			//===================================
+			// motion capture process
+			let poseStore = {};
+			let coordinateStore =[];
+			const webacamCanvas = document.getElementById("webacamCanvas");
+			const webcamCtx = webacamCanvas.getContext("2d");
+			const video = document.getElementById('video');
+			// display camera movie Canvas detected parts
+			function detectAndDraw(net) {
+				webcamCtx.drawImage(video, 0, 0, 480, 320);
+
+				net.estimateSinglePose(video, {
+					flipHorizontal: false
+				})
+				.then(function(pose) {
+					drawKeypoints(pose);
+				});
+			}
+			// draw detected parts by PoseNet
+			function drawKeypoints(pose) {
+
+
+
+
+				pose.keypoints.forEach(keypoint => {
+					if (keypoint.score > 0.4) {
+						poseStore[keypoint.part] = {
+							x: 480/2 - keypoint.position.x,
+							y: 320/2 - keypoint.position.y,
+							score:keypoint.score
+						};
+
+
+						webcamCtx.beginPath();
+						webcamCtx.fillStyle = "rgb(255, 255, 0)"; // 黄色
+						webcamCtx.arc(
+							keypoint.position.x,
+							keypoint.position.y,
+							5,
+							(10 * Math.PI) / 180,
+							(80 * Math.PI) / 180,
+							true
+						);
+						webcamCtx.fill();
+						webcamCtx.fillText(
+							keypoint.part,
+							keypoint.position.x,
+							keypoint.position.y + 10
+						);
+
+					}
+				});
+			}
+			// get camera movie
+			navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+			.then(function (mediaStream) {
+				// set video tag srcObject
+				video.srcObject = mediaStream;
+				video.onloadedmetadata = function (e) {
+					video.play();
+				};
+				return posenet.load();
+			})
+			.then(function (net) {
+				var loadingIndicator = document.getElementById("loading-indicator");
+				loadingIndicator.style.display = 'none';
+				setInterval(function () { detectAndDraw(net); }, 100);
+			});
+
+
+
+
 const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			document.body.appendChild( renderer.domElement );
+
+
+
 
 			// camera
 			const camera = new THREE.PerspectiveCamera( 30.0, window.innerWidth / window.innerHeight, 0.1, 20.0 );
@@ -16,6 +92,23 @@ const renderer = new THREE.WebGLRenderer();
 			// scene
 			const scene = new THREE.Scene();
 
+			const wallGeometry = new THREE.PlaneGeometry( 10, 20, 32 );
+			const matGeometry = new THREE.PlaneGeometry( 2, 20, 32 );
+			const wallMaterial = new THREE.MeshBasicMaterial( {color: 0xf2f7fa, side: THREE.DoubleSide} );
+			const floarMaterial = new THREE.MeshBasicMaterial({colot:0xaed4eb, side: THREE.DoubleSide} );
+			const matMaterial = new THREE.MeshBasicMaterial( {color: 0xa9c8db, side: THREE.DoubleSide} );
+			const wall = new THREE.Mesh( wallGeometry, wallMaterial );
+			const ground = new THREE.Mesh( wallGeometry, floarMaterial );
+			const mat = new THREE.Mesh( matGeometry , matMaterial );
+			wall.position.set(0.0,0.0,-3.0);
+			mat.position.set(0.0,0.00001,0);
+			ground.rotation.x = Math.PI / -2;
+			mat.rotation.x = Math.PI / -2;
+
+
+			scene.add( wall );
+			scene.add( ground );
+			scene.add(mat);
 			// light
 			const light = new THREE.DirectionalLight( 0xffffff );
 			light.position.set( 1.0, 1.0, 1.0 ).normalize();

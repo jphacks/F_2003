@@ -9,6 +9,13 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		color: white;
+		color: #001521;
+	}
+
+	#info {
+		position: absolute;
+		top: 10vh;
+		left: 5vw;
+		color: #001521;
 	}
 	#webacamCanvas { transform: rotateY(180deg); }
