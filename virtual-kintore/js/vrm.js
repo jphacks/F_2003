@@ -101,7 +101,7 @@ const renderer = new THREE.WebGLRenderer();
 			const ground = new THREE.Mesh( wallGeometry, floarMaterial );
 			const mat = new THREE.Mesh( matGeometry , matMaterial );
 			wall.position.set(0.0,0.0,-3.0);
-			mat.position.set(0.0,0.00001,0);
+			mat.position.set(0.0,0.0001,0);
 			ground.rotation.x = Math.PI / -2;
 			mat.rotation.x = Math.PI / -2;
 
@@ -160,12 +160,13 @@ const renderer = new THREE.WebGLRenderer();
 			load( './assets/vrm/Miraikomachi.vrm' );
 
 			// helpers
+			/*
 			const gridHelper = new THREE.GridHelper( 10, 10 );
 			scene.add( gridHelper );
 
 			const axesHelper = new THREE.AxesHelper( 5 );
 			scene.add( axesHelper );
-
+			*/
 			// animate
 			const clock = new THREE.Clock();
 			clock.start();
