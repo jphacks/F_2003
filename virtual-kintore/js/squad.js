@@ -24,7 +24,7 @@
 
 
 				pose.keypoints.forEach(keypoint => {
-					if (keypoint.score > 0.4) {
+					if (keypoint.score > 0.3) {
 						poseStore[keypoint.part] = {
 							x: 480/2 - keypoint.position.x,
 							y: 320/2 - keypoint.position.y,
@@ -227,11 +227,7 @@
 
 
 			function animate() {
-				requestAnimationFrame( animate );
 
-				if ( currentVrm ) { currentVrm.update( clock.getDelta() ); }
-				renderer.render( scene, camera );
-				/*
 				requestAnimationFrame( animate );
 
 				const deltaTime = clock.getDelta();
@@ -312,7 +308,7 @@
 				}
 
 				renderer.render( scene, camera );
-				*/
+
 
 			}
 			animate();

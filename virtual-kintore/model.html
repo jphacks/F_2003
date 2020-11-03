@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>スクワットチャレンジ</title>
+
+  <!--css & js-->
+  <link rel = "stylesheet" type = "text / css" href = "http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css" >
+  <link rel="stylesheet" href="css/squad.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+  <style>
+  </style>
+</head>
+<body>
+
+  <nav class="navbar has-background-info">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-white" href="#">
+        筋トレ*tech
+      </a>
+    </div>
+  </nav>
+
+      <div id="vrm"></div>
+      <div id="info">
+        <h2>現在の回数:<span id="times">1</span>回</h2>
+      </div>
+
+			<div id="mes">
+        <h2>カメラに向かってミライコマチと同じ姿勢になろう!</h2>
+      </div>
+
+      <div id="mes1">
+        <h2>次の姿勢になろう</h2>
+      </div>
+
+
+  </section>
+
+
+		<script src="https://unpkg.com/three@0.106.2/build/three.js"></script>
+		<script src="https://unpkg.com/three@0.106.2/examples/js/loaders/GLTFLoader.js"></script>
+		<script src="https://unpkg.com/three@0.106.2/examples/js/controls/OrbitControls.js"></script>
+		<script src="js/three-vrm.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js"></script>
+    <script src="js/model.js"></script>
+	</body>
+</html>

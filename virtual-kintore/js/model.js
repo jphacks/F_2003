@@ -3,80 +3,10 @@
 			// motion capture process
 			let poseStore = {};
 			let coordinateStore =[];
-			const webacamCanvas = document.getElementById("webacamCanvas");
-			const webcamCtx = webacamCanvas.getContext("2d");
-			const video = document.getElementById('video');
-			// display camera movie Canvas detected parts
-			function detectAndDraw(net) {
-				webcamCtx.drawImage(video, 0, 0, 480, 320);
-
-				net.estimateSinglePose(video, {
-					flipHorizontal: false
-				})
-				.then(function(pose) {
-					drawKeypoints(pose);
-				});
-			}
-			// draw detected parts by PoseNet
-			function drawKeypoints(pose) {
-
-
-
-
-				pose.keypoints.forEach(keypoint => {
-					if (keypoint.score > 0.4) {
-						poseStore[keypoint.part] = {
-							x: 480/2 - keypoint.position.x,
-							y: 320/2 - keypoint.position.y,
-							score:keypoint.score
-						};
-
-
-						webcamCtx.beginPath();
-						webcamCtx.fillStyle = "rgb(255, 255, 0)"; // 黄色
-						webcamCtx.arc(
-							keypoint.position.x,
-							keypoint.position.y,
-							5,
-							(10 * Math.PI) / 180,
-							(80 * Math.PI) / 180,
-							true
-						);
-						webcamCtx.fill();
-						webcamCtx.fillText(
-							keypoint.part,
-							keypoint.position.x,
-							keypoint.position.y + 10
-						);
-
-					}
-				});
-			}
-			// get camera movie
-			navigator.mediaDevices.getUserMedia({ audio: false, video: true })
-			.then(function (mediaStream) {
-				// set video tag srcObject
-				video.srcObject = mediaStream;
-				video.onloadedmetadata = function (e) {
-					video.play();
-				};
-				return posenet.load();
-			})
-			.then(function (net) {
-				var loadingIndicator = document.getElementById("loading-indicator");
-				loadingIndicator.style.display = 'none';
-				setInterval(function () { detectAndDraw(net); }, 100);
-			});
-
-
-
-
-const renderer = new THREE.WebGLRenderer();
+			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			document.body.appendChild( renderer.domElement );
-
-
 
 
 			// camera
@@ -248,90 +178,72 @@ const renderer = new THREE.WebGLRenderer();
 				return {upperArm,lowerArm}
 			}
 
+
+			const deltaTime = clock.getDelta();
+			console.log(deltaTime)
+
+			const animationTime=4
+			const animationFrame=animationTime/0.01;
+			let i=0
+
 			function animate() {
 
 				requestAnimationFrame( animate );
-				const deltaTime = clock.getDelta();
+
 
 				if ( currentVrm ) {
-					if (poseStore.leftShoulder && poseStore.rightShoulder) {
 
-						if (poseStore.leftEye && poseStore.rightEye) {
-							// ear $ eyes
-							let a=getDistance(poseStore.rightEye,poseStore.leftEye)
-							if(poseStore.leftEar && poseStore.rightEar){
-								if (poseStore.leftEar.score>poseStore.rightEar.score){
-									let b=getDistance(poseStore.leftEar,poseStore.leftEye)
-									let angle=Math.atan((b/a*0.7-Math.cos(4/15*Math.PI))/Math.sin(4/15*Math.PI))
-									currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.y = angle;
-									angle=Math.atan((poseStore.leftEar.y - poseStore.nose.y)/(poseStore.leftEar.x - poseStore.nose.x))
-									currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.x = angle;
-								}else{
-									let b=getDistance(poseStore.rightEar,poseStore.rightEye)
-									let angle=-Math.atan((b/a*0.7-Math.cos(4/15*Math.PI))/Math.sin(4/15*Math.PI))
-									currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.y = angle;
-									angle=Math.atan((poseStore.rightEar.y - poseStore.nose.y)/(poseStore.rightEar.x - poseStore.nose.x))
-									currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.x = -angle;
-								}
-							}
-						}
+					let t=i*2*Math.PI/animationFrame
+					let frame=(1-Math.cos(t))/2.0*Math.PI
+					let theta_Arm=0.25*frame
+					let theta_Hip=0.275*frame;
+					let theta_UpperLeg=0.7*frame;
+					let theta_UpperLeg_X=0.7*frame;
+					//let theta_UpperLeg_X=Math.acos(Math.cos(theta_UpperLeg)/Math.cos(0.15*Math.PI));
+					const theta_UpperLeg_Y=0.15*Math.PI;
 
-						if (poseStore.leftEye && poseStore.rightEye) {
-							// neck $ eyes
-							let angle = getAngleFromX(poseStore.rightEye, poseStore.leftEye);
-							if (angle !== null) {
-								angle = angle * -1;
-								angleStore.Head = angle;
-								angle = angle - (angleStore.Spine || 0);
-								currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.z = angle;
-							}
-						}
-						// spine & shoulder
-						let angle = getAngleFromX(poseStore.rightShoulder, poseStore.leftShoulder);
-						if (angle !== null) {
-							angle = angle * -1;
-							angleStore.Spine = angle;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Spine ).rotation.z = angle;
-						}
+					let theta_LowerLeg=-0.525*frame;
+					let theta_foot=0.1*frame;
 
-						//モデル左腕(カメラ右腕)
-						if (poseStore.rightShoulder && poseStore.rightElbow && poseStore.rightWrist && poseStore.leftShoulder) {
-							const vec = getArmPos(poseStore.rightWrist,poseStore.rightElbow,poseStore.rightShoulder,poseStore.leftShoulder)
-							const angle = getArmAngle(vec[0],vec[1])
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.x = angle.upperArm.x;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.y = angle.upperArm.y;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.z = angle.upperArm.z;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftLowerArm ).rotation.y = angle.lowerArm.y;
-						}
-						//モデル右腕(カメラ左腕)
+					let theta_pos_Hip=0.5*frame;
 
-						if (poseStore.leftShoulder && poseStore.leftElbow && poseStore.leftWrist && poseStore.rightShoulder) {
-							const vec=getArmPos(poseStore.leftWrist,poseStore.leftElbow,poseStore.leftShoulder,poseStore.rightShoulder)
-							vec[0].x*=-1
-							vec[1].x*=-1
-							const angle = getArmAngle(vec[0],vec[1])
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.x = angle.upperArm.x;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.y = -angle.upperArm.y;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.z = -angle.upperArm.z;
-							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerArm ).rotation.y = -angle.lowerArm.y;
-						}
+					i+=1
+					i%=animationFrame
+
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.y = Math.PI*0.425;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.y = -Math.PI*0.425;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.z = theta_Arm;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.z = -theta_Arm;
+
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Hips ).rotation.x = theta_Hip;
+					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Spine ).rotation.x = -Math.PI*0.375;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Neck ).rotation.x = theta_Hip;
+
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = theta_UpperLeg_X;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = theta_UpperLeg_X;
+
+					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.y = -theta_UpperLeg_Y;
+					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.y = theta_UpperLeg_Y;
+					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.z = theta_UpperLeg_Y;
+					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.z = -theta_UpperLeg_Y;
+
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.x = theta_LowerLeg;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftLowerLeg ).rotation.x = theta_LowerLeg;
 
 
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.y = -Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.x = 0//-Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = 0;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightFoot ).rotation.x = theta_foot;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftFoot ).rotation.x = theta_foot;
 
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Hips ).position.set( 0, 0.65+0.3*math.cos(theta_pos_Hip), -0.3*math.sin(theta_pos_Hip) );
 
+					currentVrm.update( deltaTime  );
 
-					}
-					 currentVrm.update( deltaTime  );
 				 }
 				renderer.render( scene, camera );
 
 			}
 
-			animate();
+			setInterval(animate(), 100);
 
 			// dnd handler
 			window.addEventListener( 'dragover', function( event ) {
