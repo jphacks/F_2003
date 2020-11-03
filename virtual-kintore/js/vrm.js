@@ -1,6 +1,8 @@
 
 			//===================================
 			// motion capture process
+			let squadCount=0;
+			let beginTime=new Date();
 			let poseStore = {};
 			let coordinateStore =[];
 			const webacamCanvas = document.getElementById("webacamCanvas");
@@ -69,6 +71,23 @@
 			});
 
 
+
+
+			function checkSquad(rightShoulder,lefttShoulder){
+					console.log((rightShoulder.y+lefttShoulder.y)/2)
+					if( (rightShoulder.y+lefttShoulder.y)/2>20){
+						state=document.getElementById('state')
+						state.innerHTML = '立ち上がっている'
+					}else{
+						tate=document.getElementById('state')
+
+						if(state.innerHTML !== 'しゃがんでいる'){
+							squadCount+=1;
+							state.innerHTML = 'しゃがんでいる'
+						}
+					}
+
+			}
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -196,23 +215,24 @@ const renderer = new THREE.WebGLRenderer();
 				return Math.acos(cos)
 			}
 
-			function getArmPos(pos_wrist,pos_elbow,pos_shoulder1,pos_shoulder2){
+			function getArmPos(pos_wrist,pos_elbow,pos_shoulder1,theta_Hip){
 				//カメラ画像上の距離,座標を定数にしておく
 				//カメラ画像上の2点間の距離
-				const shoulder = getDistance(pos_shoulder1,pos_shoulder2);
-				const elbow = getDistance(pos_shoulder1,pos_elbow);
-				//カメラ画像の座標
+			//カメラ画像の座標
 				const xc0=pos_shoulder1.x
 				const yc0=pos_shoulder1.y
 				const xc1=pos_elbow.x
 				const yc1=pos_elbow.y
 				const xc2=pos_wrist.x
 				const yc2=pos_wrist.y
+				const theta=getAngleFromX(pos_elbow, pos_shoulder1)-getAngleFromX(pos_wrist, pos_shoulder1)
 
-				z1=((xc1-xc0)**2+(yc1-yc0)**2)**0.5/0.1
-				z2=((xc2-xc1)**2+(yc2-yc1)**2)**0.5/0.1
+				const c075= Math.cos(0.075*Math.PI)
+				const s075= Math.sin(0.075*Math.PI)
+				const cHip= Math.cos(theta_Hip)
+				const sHip= Math.sin(theta_Hip)
 
-				return [{x:xc1-xc0,y:yc1-yc0,z:10},{x:xc2-xc1,y:yc2-yc1,z:10}]
+				return [{x:s075,y:sHip,z:c075*cHip},{x:s075,y:sHip,z:c075*cHip}]
 			}
 			function getArmAngle(vec1,vec2){//上腕と前腕のベクトルから角度を算出
 				//vec1={x:1,y:-2,z:-1}
@@ -252,10 +272,11 @@ const renderer = new THREE.WebGLRenderer();
 
 				requestAnimationFrame( animate );
 				const deltaTime = clock.getDelta();
-
+				let theta_Hip=0
 				if ( currentVrm ) {
 					if (poseStore.leftShoulder && poseStore.rightShoulder) {
 
+						checkSquad(poseStore.leftShoulder , poseStore.rightShoulder);
 						if (poseStore.leftEye && poseStore.rightEye) {
 							// ear $ eyes
 							let a=getDistance(poseStore.rightEye,poseStore.leftEye)
@@ -286,6 +307,7 @@ const renderer = new THREE.WebGLRenderer();
 								currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Head ).rotation.z = angle;
 							}
 						}
+						/*
 						// spine & shoulder
 						let angle = getAngleFromX(poseStore.rightShoulder, poseStore.leftShoulder);
 						if (angle !== null) {
@@ -315,17 +337,27 @@ const renderer = new THREE.WebGLRenderer();
 							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.z = -angle.upperArm.z;
 							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerArm ).rotation.y = -angle.lowerArm.y;
 						}
+						*/
+						}
+						if (poseStore.rightShoulder && poseStore.rightElbow && poseStore.rightWrist) {
+							const vec = getArmPos(poseStore.rightWrist,poseStore.rightElbow,poseStore.rightShoulder,theta_Hip)
+							const angle = getArmAngle(vec[0],vec[1])
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.x = angle.upperArm.x;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.y = angle.upperArm.y;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.z = angle.upperArm.z;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftLowerArm ).rotation.y = angle.lowerArm.y;
+						}
+						//モデル右腕(カメラ左腕)
 
-
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.y = -Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.x = 0//-Math.PI/4;
-						currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = 0;
-
-
-
-					}
-					 currentVrm.update( deltaTime  );
+						if (poseStore.leftShoulder && poseStore.leftElbow && poseStore.leftWrist ) {
+							const vec=getArmPos(poseStore.leftWrist,poseStore.leftElbow,poseStore.leftShoulder,theta_Hip)
+							const angle = getArmAngle(vec[0],vec[1])
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.x = angle.upperArm.x;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.y = -angle.upperArm.y;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.z = -angle.upperArm.z;
+							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerArm ).rotation.y = -angle.lowerArm.y;
+						}
+					  currentVrm.update( deltaTime  );
 				 }
 				renderer.render( scene, camera );
 
@@ -354,3 +386,20 @@ const renderer = new THREE.WebGLRenderer();
 				load( url );
 
 			} );
+
+			window.onbeforeunload = function(e) {
+					let getjson = localStorage.getItem('result');
+					let traningOBJ=[];
+					if (getjson!==null){
+							traningOBJ= JSON.parse(getjson);
+					}
+					const date1 = new Date();
+					const diff = date1.getTime() - beginTime.getTime();
+					const min=diff/60000|0
+					const sec=((diff%60000)/1000)|0
+					console.log(traningOBJ)
+					traningOBJ.push({date:date1.toLocaleString(),menu:"スクワット",	limitTime: min+"分"+sec+"秒"	,times:squadCount+"回"})
+
+					localStorage.setItem('result',JSON.stringify(traningOBJ));
+					e.returnvalue="今回の記録\n時間: "+min+"分"+sec+"秒\n 回数: "+squadCount+"回"
+			}

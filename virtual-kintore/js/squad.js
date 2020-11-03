@@ -257,7 +257,7 @@
 								}
 							}
 						}
-
+						/*
 						if (poseStore.leftShoulder && poseStore.rightShoulder) {
 							// spine & shoulder
 							let angle = getAngleFromX(poseStore.rightShoulder, poseStore.leftShoulder);
@@ -267,6 +267,7 @@
 								currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Spine ).rotation.z = angle;
 							}
 						}
+						*/
 						if (poseStore.leftEye && poseStore.rightEye) {
 							// neck $ eyes
 							let angle = getAngleFromX(poseStore.rightEye, poseStore.leftEye);
@@ -278,7 +279,7 @@
 							}
 						}
 
-
+						/*
 						//モデル左腕(カメラ右腕)
 						if (poseStore.rightShoulder && poseStore.rightElbow && poseStore.rightWrist && poseStore.leftShoulder) {
 							const vec = getArmPos(poseStore.rightWrist,poseStore.rightElbow,poseStore.rightShoulder,poseStore.leftShoulder)
@@ -300,8 +301,11 @@
 							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.z = -angle.upperArm.z;
 							currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerArm ).rotation.y = -angle.lowerArm.y;
 						}
-					}
 
+						*/
+
+
+					}
 					// update vrm
 					currentVrm.update( deltaTime );
 

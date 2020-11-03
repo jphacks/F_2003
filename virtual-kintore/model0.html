@@ -19,30 +19,26 @@
 
   <nav class="navbar has-background-info">
     <div class="navbar-brand">
-      <a class="navbar-item has-text-white" href="./index.html">
+      <a class="navbar-item has-text-white" href="#">
         筋トレ*tech
       </a>
-    </div>
-    <div>
-      <button onclick="calibration()"><i class="fas fa-cog"></i></button>
     </div>
   </nav>
 
       <div id="vrm"></div>
       <div id="info">
         <h2>現在の回数:<span id="times">1</span>回</h2>
-
-        <h2>現在の状態:<span id="state">初期位置</span></h2>
-      </div>
-      <div id="info">
-        <h2>認識の調整をします。ゆっくりとスクワットをしてください</h2>
       </div>
 
-      <div id="motion" >
-        <div id="loading-indicator">PoseNet model is loading.</div>
-        <canvas id="webacamCanvas" width="480" height="320"></canvas>
-        <video id="video" width="480" height="320" style="display:none;" autoplay playsinline>Video stream not
-        available.</video>
+			<div id="mes">
+        <h2>カメラに向かってミライコマチと同じ姿勢になろう!</h2>
+      </div>
+
+      <div id="mes1">
+        <h2>次の姿勢になろう</h2>
+      </div>
+
+
   </section>
 
 
@@ -53,6 +49,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js"></script>
-    <script src="js/vrm.js"></script>
+    <script src="js/model0.js"></script>
 	</body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+　<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -8,7 +8,6 @@
   <!--css & js-->
   <link rel = "stylesheet" type = "text / css" href = "http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css" >
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/result.js"></script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -19,44 +18,29 @@
 
   <nav class="navbar has-background-info">
     <div class="navbar-brand">
-      <a class="navbar-item has-text-white" href="#">
+      <a class="navbar-item has-text-white" href="index.html">
         筋トレ*tech
       </a>
     </div>
   </nav>
-
+  </div>
   <section class="section">
     <div class="container">
-      <h1>あなたの記録</h1>
-      <table>
-        <tr>
-          <th>日付</th>
-          <th>メニュー</th>
-          <th>時間</th>
-          <th>回数</th>
-        </tr>
-
-        <tr>
-          <th>20/11/1 12:00:52</th>
-          <th>スクワット</th>
-          <th>2分00秒</th>
-          <th>30回</th>
-        </tr>
-
-
-        <tr>
-          <th>20/11/1 18:00:52</th>
-          <th>スクワット</th>
-          <th>2分00秒</th>
-          <th>30回</th>
-        </tr>
-        
+      <h1 is-large>あなたの記録</h1>
+      <table class="table" id="tableContent">
+          <tr class="th">
+            <th>日付</th>
+            <th>メニュー</th>
+            <th>時間</th>
+            <th>回数</th>
+          </tr>
       </table>
     </div>
   </section>
 
-  <script>
-  </script>
+
+
+  <script src="js/result.js"></script>
 
 </body>
 </html>
