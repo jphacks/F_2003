@@ -389,9 +389,12 @@ const renderer = new THREE.WebGLRenderer();
 
 			window.onbeforeunload = function(e) {
 					let getjson = localStorage.getItem('result');
+					console.log(getjson)
 					let traningOBJ=[];
 					if (getjson!==null){
 							traningOBJ= JSON.parse(getjson);
+					}else{
+						localStorage.setItem('result',JSON.stringify(traningOBJ));
 					}
 					const date1 = new Date();
 					const diff = date1.getTime() - beginTime.getTime();

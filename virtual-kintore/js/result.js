@@ -6,7 +6,7 @@ function loadData(){
 	if (getjson!==null){
 			traningOBJ= JSON.parse(getjson);
 	}else{
-		localStorage.setItem('result',{results:[]});
+		localStorage.setItem('result',[]);
 	}
 	let tableHTML = document.getElementById('tableContent');
 	console.log(traningOBJ)
