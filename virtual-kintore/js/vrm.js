@@ -70,7 +70,7 @@
 				setInterval(function () { detectAndDraw(net); }, 100);
 			});
 
-
+			let standUpFlag=false;
 
 
 			function checkSquad(rightShoulder,lefttShoulder){
@@ -79,9 +79,12 @@
 					let state=document.getElementById('state')
 					if( (rightShoulder.y+lefttShoulder.y)/2> (sitY+3*standY)/4){
 						state.innerHTML = '立ち上がっている'
+						standUpFlag=true;
 					}else if((rightShoulder.y+lefttShoulder.y)/2< (sitY*3+standY)/4){
-						if(state.innerHTML !== 'しゃがんでいる'){
+						if(standUpFlag===true){
+							standUpFlag=false;
 							squadCount+=1;
+							play(squadCount);
 							times.innerHTML = squadCount
 							state.innerHTML = 'しゃがんでいる'
 						}
