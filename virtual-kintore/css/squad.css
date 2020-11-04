@@ -16,6 +16,25 @@
 		position: absolute;
 		top: 10vh;
 		left: 5vw;
+		font-size:4vh;
 		color: #001521;
 	}
+
+	#mes {
+		position: absolute;
+		padding:2vh;
+		width:100%;
+		top:40vh;
+		background-color: rgba(31, 157, 237,0.5);
+		color:#ffffff;
+		font-size:7vh;
+		text-align: center;
+		}
+
+#mes span {
+   display: inline-block;
+}
+.debug{
+	display:none;
+}
 	#webacamCanvas { transform: rotateY(180deg); }

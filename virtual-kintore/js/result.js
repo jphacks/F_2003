@@ -4,9 +4,15 @@ function loadData(){
 	console.log(getjson)
 	let traningOBJ=[];
 	if (getjson!==null){
+		try {
 			traningOBJ= JSON.parse(getjson);
+		}
+		catch (e) {
+			localStorage.setItem('result',JSON.stringify(traningOBJ));
+		}
+
 	}else{
-		localStorage.setItem('result',[]);
+		localStorage.setItem('result',JSON.stringify(traningOBJ));
 	}
 	let tableHTML = document.getElementById('tableContent');
 	console.log(traningOBJ)

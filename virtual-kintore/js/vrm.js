@@ -65,8 +65,8 @@
 				return posenet.load();
 			})
 			.then(function (net) {
-				var loadingIndicator = document.getElementById("loading-indicator");
-				loadingIndicator.style.display = 'none';
+				let mes=document.getElementById('mes')
+				mes.style.display='none';
 				setInterval(function () { detectAndDraw(net); }, 100);
 			});
 
@@ -74,17 +74,19 @@
 
 
 			function checkSquad(rightShoulder,lefttShoulder){
-					console.log((rightShoulder.y+lefttShoulder.y)/2)
-					if( (rightShoulder.y+lefttShoulder.y)/2>20){
-						state=document.getElementById('state')
-						state.innerHTML = '立ち上がっている'
-					}else{
-						tate=document.getElementById('state')
 
+					let times=document.getElementById('times')
+					let state=document.getElementById('state')
+					if( (rightShoulder.y+lefttShoulder.y)/2> (sitY+3*standY)/4){
+						state.innerHTML = '立ち上がっている'
+					}else if((rightShoulder.y+lefttShoulder.y)/2< (sitY*3+standY)/4){
 						if(state.innerHTML !== 'しゃがんでいる'){
 							squadCount+=1;
+							times.innerHTML = squadCount
 							state.innerHTML = 'しゃがんでいる'
 						}
+					}else{
+						state.innerHTML = '移動中'
 					}
 
 			}
@@ -274,6 +276,9 @@ const renderer = new THREE.WebGLRenderer();
 				const deltaTime = clock.getDelta();
 				let theta_Hip=0
 				if ( currentVrm ) {
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.y = 0.425*Math.PI;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.y = -0.425*Math.PI;
+
 					if (poseStore.leftShoulder && poseStore.rightShoulder) {
 
 						checkSquad(poseStore.leftShoulder , poseStore.rightShoulder);
@@ -392,7 +397,12 @@ const renderer = new THREE.WebGLRenderer();
 					console.log(getjson)
 					let traningOBJ=[];
 					if (getjson!==null){
-							traningOBJ= JSON.parse(getjson);
+							try {
+								traningOBJ= JSON.parse(getjson);
+							}
+							catch (e) {
+								localStorage.setItem('result',JSON.stringify(traningOBJ));
+							}
 					}else{
 						localStorage.setItem('result',JSON.stringify(traningOBJ));
 					}
@@ -406,3 +416,95 @@ const renderer = new THREE.WebGLRenderer();
 					localStorage.setItem('result',JSON.stringify(traningOBJ));
 					e.returnvalue="今回の記録\n時間: "+min+"分"+sec+"秒\n 回数: "+squadCount+"回"
 			}
+
+
+let pauseCount=0
+	function calibration(){
+		let mes=document.getElementById('mes')
+		mes.style.display="block"
+		mes.innerHTML="<h2><span>カメラの</span><span>前で</span><span>ミライコマチと</span><span>同じ体制に</span><span>なりましょう！</span><h2>";
+		pauseCount=squadCount
+		poseStore={}
+		let standHipY
+		//カメラが腰と肩を認識し始めるまで待つ
+		let id1 = setInterval(function(){
+			if(poseStore!=={}){
+				if(poseStore.leftShoulder&&poseStore.rightShoulder&&poseStore.leftHip&&poseStore.rightHip){
+					clearInterval(id1);
+					console.log("")
+					calkStandY();
+				}
+			}
+		}, 100);
+
+	}
+
+
+	function calkStandY(){
+		let calibrationArr=[[],[]]
+		let id2 = setInterval(function(){
+			calibrationArr[0].push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
+			calibrationArr[1].push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
+			if(calibrationArr[0].length > 20){　
+				clearInterval(id2);　//idをclearIntervalで指定している
+				calibrationArr[0]=calibrationArr[0].slice(10)//前半のデータを捨てる
+				calibrationArr[1]=calibrationArr[1].slice(10)//前半のデータを捨てる
+				standY = calibrationArr[0].reduce(function (acc, cur) {	return acc + cur;	})/calibrationArr[0].length;
+				standHipY= calibrationArr[1].reduce(function (acc, cur) {return acc + cur;})/calibrationArr[1].length;
+
+				let mes=document.getElementById('mes')
+				mes.style.display="block"
+				mes.innerHTML="<h2><span>カメラの</span><span>前で</span><span>スクワットを</span><span>一回</span><span>してください</span><h2>";
+				let sit=standY
+				let id1 = setInterval(function(){
+					sit=(poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2
+					if(sit<(2*standY+standHipY)/3){
+						clearInterval(id1);
+						calkSitY();
+					}
+				}, 100);
+
+
+
+
+			}
+		}, 20);
+	}
+
+	function calkSitY(){
+		calibrationArr=[]
+		let id3 = setInterval(function(){
+			calibrationArr.push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
+			if(calibrationArr.length > 50){　
+				clearInterval(id3);　//idをclearIntervalで指定している
+				console.log(calibrationArr)
+				console.log(Math.min(...calibrationArr))
+
+				sitY=Math.min(...calibrationArr)
+
+				let mes=document.getElementById('mes')
+				mes.style.display="block"
+
+  			setTimeout(mesHide, 1000);
+				mes.innerHTML="<h2><span>調整完了</span><span>しました。</span><span>お疲れ様</span><span>でした！</span>";
+				squadCount=pauseCount+1;
+				console.log(standY,sitY)
+				localStorage.setItem('standY',standY);
+				localStorage.setItem('sitY',sitY);
+			}
+		}, 7);
+	}
+
+	function mesHide(){
+		let mes=document.getElementById('mes')
+		mes.style.display="none"
+	}
+
+	let standY=localStorage.getItem('standY')
+	let sitY=localStorage.getItem('sitY')
+	console.log(standY,sitY)
+	if (standY === null || sitY === null){
+			standY=200
+			sitY=-10
+			calibration()
+	}

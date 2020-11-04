@@ -30,16 +30,15 @@
 
       <div id="vrm"></div>
       <div id="info">
-        <h2>現在の回数:<span id="times">1</span>回</h2>
+        <h2>現在の回数:<span id="times">0</span>回</h2>
 
-        <h2>現在の状態:<span id="state">初期位置</span></h2>
+        <h2 class="debug">現在の状態:<span id="state">初期位置</span></h2>
       </div>
-      <div id="info">
-        <h2>認識の調整をします。ゆっくりとスクワットをしてください</h2>
+      <div id="mes">
+        <h2>準備中</h2>
       </div>
 
       <div id="motion" >
-        <div id="loading-indicator">PoseNet model is loading.</div>
         <canvas id="webacamCanvas" width="480" height="320"></canvas>
         <video id="video" width="480" height="320" style="display:none;" autoplay playsinline>Video stream not
         available.</video>
