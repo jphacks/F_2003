@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>あなたの記録</title>
 
   <!--css & js-->
@@ -23,18 +23,22 @@
       </a>
     </div>
   </nav>
-  </div>
+
   <section class="section">
     <div class="container">
-      <h1 is-large>あなたの記録</h1>
-      <table class="table" id="tableContent">
+      <h1>あなたの記録</h1>
+      <div class="scrollBox">
+      <table class="table sticky_table" id="tableContent" align="center">
+        <thead>
           <tr class="th">
             <th>日付</th>
             <th>メニュー</th>
             <th>時間</th>
             <th>回数</th>
           </tr>
+        </thead>
       </table>
+    </div>
     </div>
   </section>
 

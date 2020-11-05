@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
+  <script src="js/count.js"></script>
   <style>
   </style>
 </head>
@@ -23,11 +23,27 @@
         筋トレ*tech
       </a>
     </div>
+    <div>
+      <button onclick="calibration()"><i class="fas fa-cog"></i></button>
+    </div>
   </nav>
 
       <div id="vrm"></div>
+      <div id="info">
+        <h2>現在の回数:<span id="times">0</span>回</h2>
+
+        <h2 class="debug">現在の状態:<span id="state">初期位置</span></h2>
+      </div>
 
 
+      <div id="motion" >
+        <canvas id="webacamCanvas" width="480" height="320"></canvas>
+        <video id="video" width="480" height="320" style="display:none;" autoplay playsinline>Video stream not
+        available.</video>
+      </div>
+      <div id="mes">
+        <h2>準備中</h2>
+      </div>
   </section>
 
 
@@ -38,6 +54,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js"></script>
-    <script src="js/model.js"></script>
+    <script src="js/vrm0.js"></script><!--事前にjs/count.jsも呼ぶこと -->
 	</body>
 </html>

@@ -1,0 +1,77 @@
+#home h1{
+	font-size: 12vh;
+}
+#home h2{
+	font-size:5vh;
+}
+
+#home{
+	background-color: rgba(31,157,237, 0.5);
+	height:80vh;
+	padding:20vh 0;
+	color:#fff;
+}
+#home ul{
+	font-size: 6vh;
+	color:#fff;
+}
+
+#home a {
+	font-size: 6vh;
+	color:#fff;
+}
+
+#home span{
+	margin: 3vw;
+}
+
+#home li :hover {
+	font-size: 6vh;
+	color:#1F9DED;
+}
+thead{
+		backGround-color:rgb(242,247,251);
+}
+body{
+	height:100vh;
+}
+
+.sticky_table {
+	 display: block;
+	 position: relative;
+	  overflow: scroll;
+		width: 60rem;
+		height: calc(75vh);
+		border-collapse: collapse;
+		font-size: 0;
+}
+
+.sticky_table thead,
+.sticky_table tbody {
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.sticky_table th,
+.sticky_table td {
+  display: inline-block;
+  width: 15rem;
+  background: #fff;
+  font-size: 1.0rem;
+}
+
+.sticky_table tbody th {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.sticky_table thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}

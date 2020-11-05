@@ -1,4 +1,3 @@
-
 			//===================================
 			// motion capture process
 			let poseStore = {};
