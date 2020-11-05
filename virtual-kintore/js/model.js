@@ -210,7 +210,7 @@
 
 				}
 				//console.log({upperArm,lowerArm})
-				return [upperLeg,lowerLeg]
+				return {upperLeg,lowerLeg}
 			}
 
 			const deltaTime = clock.getDelta();
@@ -248,8 +248,7 @@
 					let uvec_UpperLeg={x:Math.sin(phi_UpperLeg),y:Math.sin(theta_UpperLeg),z:Math.cos(theta_UpperLeg)}
 					let uvec_LowerLeg={x:Math.sin(phi_UpperLeg),y:Math.sin(theta_UpperLeg)*Math.sin(theta_LowerLeg),z:Math.cos(theta_UpperLeg)*Math.cos(theta_LowerLeg)}
 
-					[upperLeg,lowerLeg] = getLegAngle(uvec_UpperLeg,uvec_UpperLeg)
-					console.log(upperLeg,lowerLeg)
+					const angle = getLegAngle(uvec_UpperLeg,uvec_UpperLeg)
 
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperArm ).rotation.y = Math.PI*0.425;
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.y = -Math.PI*0.425;
@@ -260,8 +259,8 @@
 					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Spine ).rotation.x = -Math.PI*0.375;
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Neck ).rotation.x = theta_Hip;
 
-					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = upperLeg.x;
-					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = upperLeg.x;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = angle.upperLeg.x;
+					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = angle.upperLeg.x;
 
 					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.y = upperLeg.y;
 					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.y = -upperLeg.y;
