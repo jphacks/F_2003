@@ -1,6 +1,6 @@
 # サンプル（プロダクト名）
 
-[![バーチャル筋トレ カード画像](https://virtual-kintore.web.app/assets/img/virtual-kintore.PlaneGeometry)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![バーチャル筋トレ カード画像](https://virtual-kintore.web.app/assets/img/virtual-kinotre.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
