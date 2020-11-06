@@ -1,36 +1,64 @@
 #home h1{
+	text-align: center;
 	font-size: 12vh;
 }
 #home h2{
+	text-align: center;
 	font-size:5vh;
 }
-
+#home h4{
+	text-align: left;
+	padding-left: 20vw;
+	font-size:4vh;
+}
+#start{
+	margin-top: 1em;
+	margin-left: 20vw;
+	width:30vw;
+}
+#home input{
+	margin-left: 3vw;
+	background: #F2F7FC;
+	width:10vw;
+	font-size:1em;
+}
+#home select{
+	background: #F2F7FC;
+	margin-left: 3vw;
+	font-size:1em;
+}
 #home{
 	background-color: rgba(31,157,237, 0.5);
-	height:80vh;
-	padding:20vh 0;
-	color:#fff;
-}
-#main{
-
-}
-#home ul{
-	font-size: 6vh;
+	height:85vh;
+	padding:15vh 0;
 	color:#fff;
 }
 
-#home a {
+.wrap {
+	height:100%;
+  display:flex;
+  flex-flow: column;
+  justify-content:space-around;
+}
+
+.wrap button{
+  width:30vw;
+	padding-left: 0;
+	padding-right: 0;
 	font-size: 6vh;
-	color:#fff;
+	backGround-color:rgb(242,247,251);
 }
 
 #home span{
-	margin: 3vw;
+	margin-left: 3vw;
 }
 
-#home li :hover {
-	font-size: 6vh;
+.wrap button :hover {
 	color:#1F9DED;
+}
+.btnContent{
+	width:100%;
+	height:100%;
 }
 thead{
 		backGround-color:rgb(242,247,251);
@@ -39,11 +67,15 @@ body{
 	height:100vh;
 }
 
+.sticky_table .longT{
+	width:20vw;
+}
+
 .sticky_table {
 	 display: block;
 	 position: relative;
 	  overflow: scroll;
-		width: 60rem;
+		width:50vw;
 		height: calc(75vh);
 		border-collapse: collapse;
 		font-size: 0;
@@ -51,18 +83,21 @@ body{
 
 .sticky_table thead,
 .sticky_table tbody {
+	margin:0 auto;
   display: block;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }
-
 .sticky_table th,
 .sticky_table td {
   display: inline-block;
-  width: 15rem;
+  width: 10vw;
   background: #fff;
   font-size: 1.0rem;
+}
+.sticky_table thead th {
+  background: #F2F7FC;
 }
 
 .sticky_table tbody th {

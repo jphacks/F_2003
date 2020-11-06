@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="twitter:card" content="summary_large_image" /> <!--①-->
-  <meta name="twitter:site" content="@ユーザー名" /> <!--②-->
+  <meta name="twitter:site" content="@Taku10_N" /> <!--②-->
   <meta property="og:url" content="https://virtual-kintore.web.app" /> <!--③-->
   <meta property="og:title" content="virtual-kintore" /> <!--④-->
   <meta property="og:description" content="バーチャルなキャラクターと連動して筋トレしませんか?" /> <!--⑤-->
@@ -32,8 +32,8 @@
 
   <nav class="navbar has-background-info">
     <div class="navbar-brand">
-      <a class="navbar-item has-text-white" href="#">
-        筋トレ*tech
+      <a class="navbar-item has-text-white" href="#home">
+        Virtual Kintore
       </a>
     </div>
   </nav>
@@ -42,35 +42,54 @@
       <div class="hero-body" id="home">
         <div class="columns">
           <div class="column is-8"　id="main">
-            <div class="container has-text-centered">
               <h1 class="title">Virtual Kintore</h2>
               <h2 class="subtitle profession">supported by 13-3xx</h1>
-            </div>
-          </div>
-          <div class="is-4">
-            <ul>
-                  <!--<li class="is-active">
-                    <a href="#home"><i class="fas fa-home"></i><span>Home</span></a>
-                  </li>-->
-                  <li>
-                    <a href="./squad.html"><i class="fas fa-running"></i><span>Training</span></a>
-                  </li>
-                  <li>
-                    <a href="./result.html"><i class="fas fa-chart-bar"></i><span>Record</span></a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/jphacks/F_2003"><i class="fab fa-github"></i><span>Github</span></a>
-                  </li>
-                  <li>
-                    <a href="#demoMovie"><i class="fab fa-youtube"></i><span>Demo</span></a>
-                  </li>
-                  <!--
-                  <li>
-                    <a href="https://hackmd.io/tEgeVhGJRTCjcuSOIA7U0g"　target="_blank" rel="noopener noreferrer">Support</a>
-                  </li>-->
+                <div id="trainingSetup">
+                  <h4>
+                    メニュー：
+                    <select name="メニュー">
+                      <option>スクワット</option>
+                    </select>
+                  </h4>
+                  <h4>
+                    目標回数：
+                    <input id="times" type="number" name="number" min=1  value="20">
 
-                </ul>
-           </div>
+                  </h4>
+                  <button id="start" class="button is-info  is-large" onclick="start()">
+                    始める
+                  </button>
+                </div>
+
+          </div>
+          <div class="column is-4">
+            <div class="wrap">
+                <button class="button is-large" onclick="start()">
+                  <div class="btnContent">
+                    <i class="fas fa-running"></i>
+                    <span>Training</span>
+                  </div>
+                </button>
+                <button class="button is-large" onclick="openRecord()">
+                  <div class="btnContent">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Record</span>
+                  </div>
+                </button>
+                <button class="button is-large" onclick="openGithub()">
+                  <div class="btnContent">
+                    <i class="fab fa-github"></i>
+                    <span>Github</span>
+                  </div>
+                </button>
+                <button class="button is-large" onclick="openMovie()">
+                  <div class="btnContent">
+                    <i class="fab fa-youtube"></i>
+                    <span>Demo</span>
+                  </div>
+                </button>
+              </div>
+          </div>
 
         </div>
       </div>
@@ -79,15 +98,13 @@
      <!-- End Hero -->
    </div>
    <!-- End Header -->
-  <section class="section">
 
       <a href="privacy.html">プライバシーポリシー</a>
+      <br>
+      <p>Virtual Kintore is developed by 13-3XX</p>
 
 
       <!--
-      <select name="メニュー">
-        <option>スクワット</option>
-      </select>
 
       <select name="時間">
       <option>無制限</option>
@@ -95,9 +112,7 @@
         <option　disabled selected value>3分</option>
       </select>
 
-      <button>
-        始める
-      </button>
+
     </div>
 
     <div class="container">
@@ -113,9 +128,28 @@
       -->
     </div>
 
-  </section>
 
   <script>
+  function start(){
+    const goalCounts=document.getElementById('times').value;
+
+    window.location.href = 'squad.html?goal='+goalCounts;
+  }
+
+  function openRecord(){
+    window.location.href = 'result.html';
+  }
+
+  function openMovie(){
+    console.log("hi")
+    window.open('https://www.youtube.com/watch?v=G5rULR53uMk&ab_channel=JPHACKS', '_blank');
+  }
+
+  function openGithub(){
+    console.log("hi")
+    window.open('https://github.com/jphacks/F_2003', '_blank');
+  }
+
 
 
   </script>

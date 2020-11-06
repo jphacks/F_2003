@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>スクワットチャレンジ</title>
+<link rel="icon" type="image/png" href="assets/favicon.ico" />
 
   <!--css & js-->
   <link rel = "stylesheet" type = "text / css" href = "http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css" >
@@ -23,11 +24,11 @@
         筋トレ*tech
       </a>
     </div>
-    <div>
-      <button onclick="calibration()"><i class="fas fa-cog"></i></button>
-    </div>
   </nav>
 
+  <div id="settingBtn">
+    <button class="button is-large" onclick="calibration()"><i class="fas fa-cog"></i></button>
+  </div>
       <div id="vrm"></div>
       <div id="info">
         <h2>現在の回数:<span id="times">0</span>回</h2>
@@ -43,6 +44,11 @@
       </div>
       <div id="mes">
         <h2>準備中</h2>
+      </div>
+
+
+      <div id="adovice" class="balloon1-right">
+        <p><span><i class="fas fa-cog"></i>から姿勢計測の</span><span>調整ができます</span></p>
       </div>
   </section>
 

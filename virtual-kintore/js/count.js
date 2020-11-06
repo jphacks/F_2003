@@ -27,25 +27,37 @@ num2digits.push(numZero[2]);
 num2digits.push(numZero[3]);
 num2digits.push(new Audio('assets/sound/fifty1.mp3'));
 
-function play(count){
-	if(count<10){
-		num[count-1].play()
-	}else if( count<50){
-		if(count%10===0){
-			numZero[(count/10|0)-1].play()
-		}else{
+const finish=[]
+finish.push(new Audio('assets/sound/fin1.mp3'));
+finish.push(new Audio('assets/sound/fin3.mp3'));
 
-			let time=600
-			if (count%10==1){
-				time=400
-			}
-			setTimeout(function () {
-				num[count%10-1].play();
-			},600);
-			num2digits[(count/10|0)-1].play()
-		}
+console.log(finish[0])
+function play(count){
+	if(count=="finish"){
+		finish[1].play();
+	}else if(count=="lastSpurt"){
+		finish[0].play();
 	}else{
-		praise[Math.floor(Math.random()*3)].play();  // 再生
+		if(count<10){
+			num[count-1].play()
+		}else if( count<50){
+			if(count%10===0){
+				numZero[(count/10|0)-1].play()
+			}else{
+
+				let time=600
+				if (count%10==1){
+					time=400
+				}
+				setTimeout(function () {
+					num[count%10-1].play();
+				},600);
+				num2digits[(count/10|0)-1].play()
+			}
+		}else{
+			praise[Math.floor(Math.random()*3)].play();  // 再生
+		}
+		console.log(count)
 	}
-	console.log(count)
+
 }

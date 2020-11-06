@@ -72,15 +72,84 @@
 
 			let standUpFlag=false;
 
-
+			let freqBegin = new Date();
+			let freqEnd = new Date();
+			let freqStagger=[];
 			function checkSquad(rightShoulder,lefttShoulder){
-
+					freqStagger.push((rightShoulder.x+lefttShoulder.x)/2)
 					let times=document.getElementById('times')
 					let state=document.getElementById('state')
+
 					if( (rightShoulder.y+lefttShoulder.y)/2> (sitY+3*standY)/4){
+
+
+						if(standUpFlag===false){//移動中->立ち上がり
+
+
+								if(squadCount>1){
+									//1周期分の時間の計測
+									freqEnd = new Date();
+									const freqTime = freqEnd.getTime() - freqBegin.getTime();
+									frequency.push(freqTime);
+
+									//一周期分の位置(x座標)の分散の計測
+									variance=calcVariance(freqStagger)
+									stagger.push(variance);
+								}else{
+
+									let adovice=document.getElementById('adovice')
+									adovice.style.display="inline-block"
+									adovice.innerHTML="<p>目標回数まで頑張りましょう！</p>"
+								}
+
+
+								//ふらつき、周期でのメッセージ表示
+								if (stagger.length%5==4){
+									console.log(staggerCheck())
+									let adovice=document.getElementById('adovice')
+									adovice.style.display="inline-block"
+									console.log((stagger.length/5|0)%2)
+									if((stagger.length/5|0)%2==0){
+										adovice.innerHTML=staggerCheck();
+									}else{
+										adovice.innerHTML=frequencyCheck();
+									}
+								}
+
+
+
+		/*						const mes=staggerCheck()+frequencyCheck()
+								if (mes!==""){
+									let mes=document.getElementById('mes')
+									mes.style.display="block"
+									mes.innerHTML=mes;
+									setTimeout(mesHide, 1000);
+								}
+		*/
+						}
+
+
 						state.innerHTML = '立ち上がっている'
 						standUpFlag=true;
+
+						//目標の80%の回数での音声再生
+						if (lastSpurtFlag==false && finishFlag==false && squadCount>=goal*0.8){
+							play("lastSpurt");
+							lastSpurtFlag=true;
+						}
+
+						//目標回数での音声再生
+						if (finishFlag==false && squadCount>=goal){
+							play("finish");
+							finishFlag=true;
+
+							let adovice=document.getElementById('adovice')
+							adovice.style.display="inline-block"
+							adovice.innerHTML="<p>お疲れ様でした！</p>"
+						}
+
 					}else if((rightShoulder.y+lefttShoulder.y)/2< (sitY*3+standY)/4){
+						//しゃがんでいる
 						if(standUpFlag===true){
 							standUpFlag=false;
 							squadCount+=1;
@@ -89,6 +158,10 @@
 							state.innerHTML = 'しゃがんでいる'
 						}
 					}else{
+						if(state.innerHTML ==='立ち上がっている'){
+							freqBegin=new Date();
+							freqStagger=[];
+						}
 						state.innerHTML = '移動中'
 					}
 
@@ -168,6 +241,8 @@ const renderer = new THREE.WebGLRenderer();
 							vrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Hips ).rotation.y = Math.PI;
 
 							console.log( vrm );
+							let adovice=document.getElementById('adovice')
+							adovice.style.display="inline-block"
 
 						} );
 
@@ -396,6 +471,9 @@ const renderer = new THREE.WebGLRenderer();
 			} );
 
 			window.onbeforeunload = function(e) {
+				if (squadCount===0){
+					e.returnvalue="ページを閉じます"
+				}else{
 					let getjson = localStorage.getItem('result');
 					console.log(getjson)
 					let traningOBJ=[];
@@ -418,14 +496,17 @@ const renderer = new THREE.WebGLRenderer();
 
 					localStorage.setItem('result',JSON.stringify(traningOBJ));
 					e.returnvalue="今回の記録\n時間: "+min+"分"+sec+"秒\n 回数: "+squadCount+"回"
+				}
 			}
 
 
 let pauseCount=0
 	function calibration(){
+		let adovice=document.getElementById('adovice')
+		adovice.style.display="none"
 		let mes=document.getElementById('mes')
 		mes.style.display="block"
-		mes.innerHTML="<h2><span>カメラの</span><span>前で</span><span>ミライコマチと</span><span>同じ体制に</span><span>なりましょう！</span><h2>";
+		mes.innerHTML="<h2><span>カメラの</span><span>前で</span><span>ミライコマチと</span><span>同じ体勢に</span><span>なりましょう！</span><h2>";
 		pauseCount=squadCount
 		poseStore={}
 		let standHipY
@@ -486,7 +567,7 @@ let pauseCount=0
 
   			setTimeout(mesHide, 1000);
 				mes.innerHTML="<h2><span>調整完了</span><span>しました。</span><span>お疲れ様</span><span>でした！</span>";
-				squadCount=pauseCount+1;
+				squadCount=pauseCount;
 				console.log(standY,sitY)
 				localStorage.setItem('standY',standY);
 				localStorage.setItem('sitY',sitY);
@@ -501,9 +582,108 @@ let pauseCount=0
 
 	let standY=localStorage.getItem('standY')
 	let sitY=localStorage.getItem('sitY')
-	console.log(standY,sitY)
 	if (standY === null || sitY === null){
 			standY=200
 			sitY=-10
 			calibration()
 	}
+	console.log(standY,sitY)
+
+
+	function getParam(name, url) {
+	    if (!url) url = window.location.href;
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+	let goal=50;
+	if (getParam('goal') != null){
+		goal=parseInt(getParam('goal'), 10);
+	}
+	let finishFlag=false;
+	let lastSpurtFlag=false;
+
+	const lsm = coordinates => {
+	  const n = coordinates.length;
+		zip=[]
+		coordinates.forEach(element => zip.push({x:zip.length ,y:element}));
+	  const sigX = zip.reduce((acc, c) => acc + c.x, 0);
+	  const sigY = zip.reduce((acc, c) => acc + c.y, 0);
+	  const sigXX = zip.reduce((acc, c) => acc + c.x * c.x, 0);
+	  const sigXY = zip.reduce((acc, c) => acc + c.x * c.y, 0);
+	  // a(傾き)を求める
+	  const a = (n * sigXY - sigX * sigY) / (n * sigXX - Math.pow(sigX, 2));
+	  // b(切片)を求める
+	  const b = (sigXX * sigY - sigXY * sigX) / (n * sigXX - Math.pow(sigX, 2));
+	  return { a, b };
+	}
+
+	function staggerCheck(){
+		const {a,b}=lsm(stagger)
+		console.log(stagger)
+		console.log(a,b)
+		const mesList=[	"<p><span>徐々にふらつきが抑えられています。</span><span>その調子です!</span></p>",
+			"<p><span>ふらつき加減はほとんど変わりません。</span><span>素晴らしい精密さです。</span></p>",
+			"<p><span>だんだんふらつきが増えているようです。</span><span>丁寧に行いましょう。</span></p>",
+		]
+
+		if (a>0.2){
+			return mesList[0]
+		}
+		if(a<-0.2){
+			return mesList[2]
+		}
+		return mesList[1]
+
+	}
+
+
+
+	function frequencyCheck(){
+		const {a,b}=lsm(frequency)
+		console.log(frequency)
+		console.log(a,b)
+		const mesList=[
+			"<p><span>だんだんペースが早くなっているようです。</span><span>焦らずゆっくり行いましょう!</span></p>",
+			"<p><span>ペースがほとんど変わりません。</span><span>素晴らしい精密さです。</span></p>",
+			"<p><span>だんだんペースが遅くなっているようです。</span><span>ここがふんばりどきです!</span></p>",
+		]
+
+		if (a>40){
+			return mesList[0]
+		}
+		if(a<-40){
+			return mesList[2]
+		}
+		return mesList[1]
+	}
+
+	function calcVariance(){
+		var sum  = function(arr) {
+    return arr.reduce(function(prev, current, i, arr) {
+        return prev+current;
+    });
+		};
+		const ave=sum(freqStagger)/freqStagger.length
+		let variance=0;
+		freqStagger.forEach(element => variance +=( element - ave )*( element - ave ));
+		variance/=freqStagger.length
+		return variance
+	}
+
+const stagger=[];
+const frequency=[];
+let meanStagger=0;
+let meanFrequency=0;
+
+/*
+function getStagger(stagger){
+
+	const variance;
+	return variance;
+}
+*/

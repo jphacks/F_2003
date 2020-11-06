@@ -1,4 +1,4 @@
-# サンプル（プロダクト名）
+# Virtual Kintore
 
 [![バーチャル筋トレ カード画像](https://virtual-kintore.web.app/assets/img/virtual-kinotre.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
 

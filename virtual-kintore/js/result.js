@@ -16,7 +16,7 @@ function loadData(){
 	}
 	let tableHTML = document.getElementById('tableContent');
 	console.log(traningOBJ)
-	traningOBJ.forEach(result =>tableHTML.insertAdjacentHTML('BeforeEnd','<tr><th>'+result.date+'</th><th>'+result.menu+'</th><th>'+result.limitTime+'</th><th>'+result.times+'</th></tr>'));
+	traningOBJ.reverse().forEach(result =>tableHTML.insertAdjacentHTML('BeforeEnd','<tr><th class="longT">'+result.date+'</th><th>'+result.menu+'</th><th>'+result.limitTime+'</th><th>'+result.times+'</th></tr>'));
 }
 
 loadData();
