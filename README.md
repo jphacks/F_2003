@@ -19,7 +19,7 @@
 | RFA<br>（既存ゲーム）  | 高い<br>（ゲーム機） | **正しい**<br>（センサによる動作認識）<br>（補正のアドバイス） | **高い**<br>（応援）<br>（ゲーム性）| **初心者から上級者まで** |
 | 動画による講座  |  **低い**<br>（スマホ） | 低い<br>（見るだけ）| 低い | 初心者 |
 | 何も使わない | **低い**<br>（なし）　|　低い | 低い | 上級者 |
-|<span style="background: #00ff00; color:100%;"> **Virtual Kintore**<br>（提案サービス） </span>|<span style="background: #00ff00; color:100%;"> **低い**<br>（スマホ） |<span style="background: #00ff00; color:100%;"> **高い**<br>（カメラによる動作認識）<br>（上級者との比較）</span>|<span style="background: #00ff00; color:100%;"> **高い**<br>（応援）<br>（非日常の体験</span>）|<span style="background: #00ff00; color:100%;"> 初心者から上級者まで </span>|
+|<span style="background: #A9C8DB;"> **Virtual Kintore**<br>（提案サービス） </span>|<span style="background: #A9C8DB;"> **低い**<br>（スマホ） |<span style="background: #A9C8DB;"> **高い**<br>（カメラによる動作認識）<br>（上級者との比較）</span>|<span style="background: #A9C8DB;"> **高い**<br>（応援）<br>（非日常の体験</span>）|<span style="background: #A9C8DB;"> 初心者から上級者まで </span>|
 
 ### 抽出事項  
 * 敷居：**センサ類を用意すると敷居が高くなってしまう**（が、動作認識が可能になり正しさが増す）  
