@@ -448,7 +448,7 @@ let pauseCount=0
 		let id2 = setInterval(function(){
 			calibrationArr[0].push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
 			calibrationArr[1].push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
-			if(calibrationArr[0].length > 20){　
+			if(calibrationArr[0].length > 30){　
 				clearInterval(id2);　//idをclearIntervalで指定している
 				calibrationArr[0]=calibrationArr[0].slice(10)//前半のデータを捨てる
 				calibrationArr[1]=calibrationArr[1].slice(10)//前半のデータを捨てる
@@ -466,19 +466,15 @@ let pauseCount=0
 						calkSitY();
 					}
 				}, 100);
-
-
-
-
 			}
-		}, 20);
+		}, 25);
 	}
 
 	function calkSitY(){
 		calibrationArr=[]
 		let id3 = setInterval(function(){
 			calibrationArr.push((poseStore.leftShoulder.y+poseStore.rightShoulder.y)/2)
-			if(calibrationArr.length > 50){　
+			if(calibrationArr.length > 75){　
 				clearInterval(id3);　//idをclearIntervalで指定している
 				console.log(calibrationArr)
 				console.log(Math.min(...calibrationArr))
@@ -495,7 +491,7 @@ let pauseCount=0
 				localStorage.setItem('standY',standY);
 				localStorage.setItem('sitY',sitY);
 			}
-		}, 7);
+		}, 20);
 	}
 
 	function mesHide(){
