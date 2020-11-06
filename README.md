@@ -1,6 +1,6 @@
 # Virtual Kintore
 ### コロナ禍により運動不足を感じるあなた！必要なのはスマホのみ！誰でもどこでも簡単筋トレ！
-### 3Dモデルを動かして正しい&楽しい筋トレ生活を送ろう！
+### 自分好みの3Dモデルを動かして正しい&楽しい筋トレ生活を送ろう！
 [![バーチャル筋トレ カード画像](https://virtual-kintore.web.app/assets/img/virtual-kinotre.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
 ## 製品概要
