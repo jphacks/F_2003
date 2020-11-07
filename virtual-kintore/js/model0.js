@@ -182,8 +182,8 @@
 			const deltaTime = clock.getDelta();
 			console.log(deltaTime)
 
-			const animationTime=4
-			const animationFrame=animationTime/0.01;
+			const animationTime=3
+			const animationFrame=animationTime/0.03;
 			let i=0
 
 			function animate() {
@@ -216,16 +216,10 @@
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperArm ).rotation.z = -theta_Arm;
 
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Hips ).rotation.x = theta_Hip;
-					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Spine ).rotation.x = -Math.PI*0.375;
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Neck ).rotation.x = theta_Hip;
 
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.x = theta_UpperLeg_X;
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.x = theta_UpperLeg_X;
-
-					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.y = -theta_UpperLeg_Y;
-					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.y = theta_UpperLeg_Y;
-					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightUpperLeg ).rotation.z = theta_UpperLeg_Y;
-					//currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftUpperLeg ).rotation.z = -theta_UpperLeg_Y;
 
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.RightLowerLeg ).rotation.x = theta_LowerLeg;
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.LeftLowerLeg ).rotation.x = theta_LowerLeg;
@@ -236,14 +230,14 @@
 
 					currentVrm.humanoid.getBoneNode( THREE.VRMSchema.HumanoidBoneName.Hips ).position.set( 0, 0.65+0.3*math.cos(theta_pos_Hip), -0.3*math.sin(theta_pos_Hip) );
 
-					currentVrm.update( deltaTime  );
+					currentVrm.update(0.01);
 
 				 }
 				renderer.render( scene, camera );
 
 			}
 
-			setInterval(animate(), 100);
+			setInterval(animate(), 10);
 
 			// dnd handler
 			window.addEventListener( 'dragover', function( event ) {
