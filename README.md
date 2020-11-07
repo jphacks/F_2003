@@ -101,7 +101,7 @@
 - [効果音ラボ](https://soundeffect-lab.info/sound/voice/)
 
 #### フレームワーク・ライブラリ・モジュール
-- [BULUMA](https://bulma.io/)
+- [BULMA](https://bulma.io/)
 - [posenet](https://github.com/tensorflow/tfjs-models/tree/master/posenet)
 - [three-vrm](https://github.com/pixiv/three-vrm)
 
