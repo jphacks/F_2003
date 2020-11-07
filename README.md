@@ -3,6 +3,9 @@
 ### 自分好みの3Dモデルを動かして正しい&楽しい筋トレ生活を送ろう！
 [![バーチャル筋トレ カード画像](https://virtual-kintore.web.app/assets/img/virtual-kinotre.png)](https://youtu.be/PM5yNzFXxdg)
 
+- [Virtual Kintore 実際の使用動作でのデモ動画](https://youtu.be/PM5yNzFXxdg)
+- [Virtual Kintore でできることをまとめた動画](https://youtu.be/awi13V-f4fA)
+
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
 ～あるアイデアだしにて～  
@@ -51,7 +54,9 @@
 
 
 ### 特長
-<iframe width="560" height="315" src="https://www.youtube.com/embed/awi13V-f4fA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+- [Virtual Kintoreでできることをまとめた動画](https://youtu.be/awi13V-f4fA)
+
 特長は上記、注目ポイントの通り。
 以下、サービスの使用方法を通して特徴を説明します。
 
